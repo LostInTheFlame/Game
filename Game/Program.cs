@@ -13,17 +13,18 @@ namespace Game
         static void Main()
         {
             Console.CursorVisible = false;
-            Field();
             Random rand = new Random();
+            y = rand.Next(1, 11);
+            DrawField();
             int[] trapCoordinates = new int[20];
             for (int i = 0; i < 20; i++)
             {
-                trapCoordinates[i] = rand.Next(1, 10);
+                trapCoordinates[i] = rand.Next(1, 11);
             }
 
             while (true)
             {
-                PlayerDraw();
+                DrawPlayerPosition(sprite);
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
@@ -31,7 +32,7 @@ namespace Game
                         {
                             continue;
                         }
-                        PlayerRemove();
+                        DrawPlayerPosition(' ');
                         x--;
                         break;
                     case ConsoleKey.RightArrow:
@@ -39,7 +40,7 @@ namespace Game
                         {
                             continue;
                         }
-                        PlayerRemove();
+                        DrawPlayerPosition(' ');
                         x++;
                         break;
                     case ConsoleKey.UpArrow:
@@ -47,7 +48,7 @@ namespace Game
                         {
                             continue;
                         }
-                        PlayerRemove();
+                        DrawPlayerPosition(' ');
                         y--;
                         break;
                     case ConsoleKey.DownArrow:
@@ -55,7 +56,7 @@ namespace Game
                         {
                             continue;
                         }
-                        PlayerRemove();
+                        DrawPlayerPosition(' ');
                         y++;
                         break;
                 }
@@ -64,9 +65,9 @@ namespace Game
                 {
                     if (x == trapCoordinates[i] && y == trapCoordinates[j])
                     {
-                        life -= rand.Next(1, 10);
+                        life -= rand.Next(1, 11);
                         Console.SetCursorPosition(0, 14);
-                        Console.Write($"You're trapped. Remaimning life: {life}");
+                        Console.Write($"You're trapped. Remaining life: {life}");
                     }
 
                     if (life < 1)
@@ -82,7 +83,7 @@ namespace Game
                 }
             }
 
-            static void Field()
+            static void DrawField()
             {
                 char ch = '*';
                 for (int i = 0, j = 0; i < 12; i++, j++)
@@ -96,26 +97,42 @@ namespace Game
                     Console.SetCursorPosition(11, j);
                     Console.Write(ch);
                 }
-                Console.SetCursorPosition(10, 10);
+
+                if (y >= 1 && y < 5)
+                {
+                    Console.SetCursorPosition(10, 10);
+                }
+                else if (y > 5 && y <= 10)
+                {
+                    Console.SetCursorPosition(10, 1);
+                }
+                else
+                {
+                    Random rand = new Random();
+                    int randomCoordinate = rand.Next(1, 3);
+
+                    if (randomCoordinate == 1)
+                    {
+                        Console.SetCursorPosition(10, 1);
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(10, 10);
+                    }
+                }
                 Console.WriteLine("?");
             }
 
-            static void PlayerDraw()
+            static void DrawPlayerPosition(char sprite)
             {
                 Console.SetCursorPosition(x, y);
                 Console.Write(sprite);
             }
 
-            static void PlayerRemove()
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(" ");
-            }
-
             static void End()
             {
                 Console.Clear();
-                if (endFlag == true)
+                if (endFlag)
                 {
                     Console.WriteLine("Congratulations, you won!\nWant to play again? (y/n)");
                 }
@@ -130,7 +147,6 @@ namespace Game
                     case "y":
                         Console.Clear();
                         x = 1;
-                        y = 1;
                         life = 10;
                         endFlag = false;
                         Main();
