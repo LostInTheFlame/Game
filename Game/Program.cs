@@ -9,6 +9,7 @@ namespace Game
         static int y = 1;
         static char sprite = 'P';
         static int life = 10;
+        static int[] endCoordinates;
 
         static void Main()
         {
@@ -24,7 +25,7 @@ namespace Game
 
             while (true)
             {
-                DrawPlayerPosition(sprite);
+                UpdatePlayerPosition(sprite);
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
@@ -32,7 +33,7 @@ namespace Game
                         {
                             continue;
                         }
-                        DrawPlayerPosition(' ');
+                        UpdatePlayerPosition(' ');
                         x--;
                         break;
                     case ConsoleKey.RightArrow:
@@ -40,7 +41,7 @@ namespace Game
                         {
                             continue;
                         }
-                        DrawPlayerPosition(' ');
+                        UpdatePlayerPosition(' ');
                         x++;
                         break;
                     case ConsoleKey.UpArrow:
@@ -48,7 +49,7 @@ namespace Game
                         {
                             continue;
                         }
-                        DrawPlayerPosition(' ');
+                        UpdatePlayerPosition(' ');
                         y--;
                         break;
                     case ConsoleKey.DownArrow:
@@ -56,7 +57,7 @@ namespace Game
                         {
                             continue;
                         }
-                        DrawPlayerPosition(' ');
+                        UpdatePlayerPosition(' ');
                         y++;
                         break;
                 }
@@ -76,7 +77,7 @@ namespace Game
                     }
                 }
 
-                if (x == 10 && y == 10)
+                if (x == endCoordinates[0] && y == endCoordinates[1])
                 {
                     endFlag = true;
                     End();
@@ -100,30 +101,33 @@ namespace Game
 
                 if (y >= 1 && y < 5)
                 {
+                    endCoordinates = new int[] { 10, 10 };
                     Console.SetCursorPosition(10, 10);
                 }
                 else if (y > 5 && y <= 10)
                 {
+                    endCoordinates = new int[] { 10, 1 };
                     Console.SetCursorPosition(10, 1);
                 }
                 else
                 {
                     Random rand = new Random();
-                    int randomCoordinate = rand.Next(1, 3);
 
-                    if (randomCoordinate == 1)
+                    if (rand.Next(1, 3) == 1)
                     {
+                        endCoordinates = new int[] { 10, 1 };
                         Console.SetCursorPosition(10, 1);
                     }
                     else
                     {
+                        endCoordinates = new int[] { 10, 10 };
                         Console.SetCursorPosition(10, 10);
                     }
                 }
                 Console.WriteLine("?");
             }
 
-            static void DrawPlayerPosition(char sprite)
+            static void UpdatePlayerPosition(char sprite)
             {
                 Console.SetCursorPosition(x, y);
                 Console.Write(sprite);
