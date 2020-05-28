@@ -7,7 +7,8 @@ namespace Game
         static bool endFlag = false;
         static int x = 1;
         static int y = 1;
-        static char sprite = 'P';
+        static char playerIcon = 'P';
+        static char emptyCell = ' ';
         static int life = 10;
         static int[] endCoordinates;
 
@@ -25,7 +26,7 @@ namespace Game
 
             while (true)
             {
-                UpdatePlayerPosition(sprite);
+                UpdateAndDrawPlayerPosition(playerIcon);
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
@@ -33,7 +34,7 @@ namespace Game
                         {
                             continue;
                         }
-                        UpdatePlayerPosition(' ');
+                        UpdateAndDrawPlayerPosition(emptyCell);
                         x--;
                         break;
                     case ConsoleKey.RightArrow:
@@ -41,7 +42,7 @@ namespace Game
                         {
                             continue;
                         }
-                        UpdatePlayerPosition(' ');
+                        UpdateAndDrawPlayerPosition(emptyCell);
                         x++;
                         break;
                     case ConsoleKey.UpArrow:
@@ -49,7 +50,7 @@ namespace Game
                         {
                             continue;
                         }
-                        UpdatePlayerPosition(' ');
+                        UpdateAndDrawPlayerPosition(emptyCell);
                         y--;
                         break;
                     case ConsoleKey.DownArrow:
@@ -57,7 +58,7 @@ namespace Game
                         {
                             continue;
                         }
-                        UpdatePlayerPosition(' ');
+                        UpdateAndDrawPlayerPosition(emptyCell);
                         y++;
                         break;
                 }
@@ -127,7 +128,7 @@ namespace Game
                 Console.WriteLine("?");
             }
 
-            static void UpdatePlayerPosition(char sprite)
+            static void UpdateAndDrawPlayerPosition(char sprite)
             {
                 Console.SetCursorPosition(x, y);
                 Console.Write(sprite);
